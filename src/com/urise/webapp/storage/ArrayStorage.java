@@ -41,6 +41,7 @@ public class ArrayStorage {
     public Resume get(String uuid) {
         if (findIndex(uuid) == -1) {
             System.out.printf("Error. Resume %s is not found\n", uuid);
+            return null;
         }
         return storage[findIndex(uuid)];
     }
