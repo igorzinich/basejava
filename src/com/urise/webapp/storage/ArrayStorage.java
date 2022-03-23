@@ -18,10 +18,11 @@ public class ArrayStorage {
 
     public void update(Resume resume) {
         String uuid = resume.getUuid();
-        if (findIndex(uuid) == -1) {
+        int index = findIndex(uuid);
+        if (index == -1) {
             System.out.printf("Error. Resume %s is not found\n", uuid);
         } else {
-            storage[findIndex(uuid)] = resume;
+            storage[index] = resume;
             System.out.printf("Resume %s updated\n", uuid);
         }
     }
@@ -39,11 +40,12 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        if (findIndex(uuid) == -1) {
+        int index = findIndex(uuid);
+        if (index == -1) {
             System.out.printf("Error. Resume %s is not found\n", uuid);
             return null;
         }
-        return storage[findIndex(uuid)];
+        return storage[index];
     }
 
     public void delete(String uuid) {
