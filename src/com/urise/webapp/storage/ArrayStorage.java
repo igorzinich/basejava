@@ -30,9 +30,9 @@ public class ArrayStorage {
     public void save(Resume r) {
         String uuid = r.getUuid();
         if (findIndex(uuid) != -1) {
-            System.out.printf("Resume %s always exists\n", uuid);
+            System.out.printf("Resume %s already exist\n", uuid);
         } else if (size == storage.length) {
-            System.out.println("Storage is full");
+            System.out.println("Storage overflow");
         } else {
             storage[size] = r;
             size++;
