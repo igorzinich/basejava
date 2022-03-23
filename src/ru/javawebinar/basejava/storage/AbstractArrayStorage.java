@@ -1,13 +1,16 @@
-package com.urise.webapp.storage;
+package ru.javawebinar.basejava.storage;
 
-import com.urise.webapp.model.Resume;
+import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
 
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage extends AbstractArrayStorage {
+public abstract class AbstractArrayStorage implements Storage {
+    protected static final int STORAGE_LIMIT = 10000;
+    protected Resume[] storage = new Resume[STORAGE_LIMIT];
+    protected int size = 0;
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -17,7 +20,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     public void update(Resume resume) {
         String uuid = resume.getUuid();
         int index = findIndex(uuid);
-        if (index == -1) {
+        if (index <= -1) {
             System.out.printf("Error. Resume %s is not found\n", uuid);
         } else {
             storage[index] = resume;
@@ -25,21 +28,9 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
     }
 
-    public void save(Resume r) {
-        String uuid = r.getUuid();
-        if (findIndex(uuid) != -1) {
-            System.out.printf("Resume %s already exist\n", uuid);
-        } else if (size == STORAGE_LIMIT) {
-            System.out.println("Storage overflow");
-        } else {
-            storage[size] = r;
-            size++;
-        }
-    }
-
     public void delete(String uuid) {
         int index = findIndex(uuid);
-        if (index == -1) {
+        if (index <= -1) {
             System.out.printf("Resume %s is not found\n", uuid);
         } else {
             storage[index] = storage[size - 1];
@@ -48,19 +39,25 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
     }
 
-    /**
-     * @return array, contains only Resumes in storage (without null)
-     */
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
-    protected int findIndex(String uuid) {
-        for (int i = 0; i < size; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                return i;
-            }
-        }
-        return -1;
+    public int size() {
+        return size;
     }
+
+    public Resume get(String uuid) {
+        int index = findIndex(uuid);
+        if (index == -1) {
+            System.out.printf("Error. Resume %s is not found\n", uuid);
+            return null;
+        }
+        return storage[index];
+    }
+
+    public abstract void save(Resume r);
+
+    protected abstract int findIndex(String uuid);
+
 }
