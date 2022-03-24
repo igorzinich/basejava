@@ -7,17 +7,18 @@ import ru.javawebinar.basejava.model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
+
     @Override
-    public void save(Resume r) {
-        String uuid = r.getUuid();
-        if (findIndex(uuid) != -1) {
-            System.out.printf("Resume %s already exist\n", uuid);
-        } else if (size == STORAGE_LIMIT) {
-            System.out.println("Storage overflow");
-        } else {
-            storage[size] = r;
-            size++;
-        }
+    protected void saveItem(Resume r) {
+        storage[size] = r;
+        size++;
+    }
+
+    @Override
+    protected void deleteItem(String uuid) {
+        storage[findIndex(uuid)] = storage[size - 1];
+        storage[size - 1] = null;
+        size--;
     }
 
     @Override
