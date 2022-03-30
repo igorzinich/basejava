@@ -3,22 +3,24 @@ package ru.javawebinar.basejava.storage;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+
 public abstract class AbstractArrayStorageTest {
     private Storage storage;
-
-    public AbstractArrayStorageTest(Storage storage) {
-        this.storage = storage;
-    }
 
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
+
+    public AbstractArrayStorageTest(Storage storage) {
+        this.storage = storage;
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -31,40 +33,72 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void clear() {
         storage.clear();
-        Assert.assertEquals(0, storage.size());
+        assertEquals(0, storage.size());
     }
 
     @Test
     public void update() {
-        storage.update(new Resume(UUID_1));
+        Resume resume = new Resume(UUID_1);
+        storage.update(resume);
+        assertEquals(storage.get(UUID_1), resume);
+    }
 
+    @Test (expected = NotExistStorageException.class)
+    public void updateNotExist() {
+        storage.update(new Resume("dummy"));
     }
 
     @Test
     public void save() {
-        storage.save(new Resume("Test_UUID"));
-        Assert.assertEquals("Test_UUID", storage.get("Test_UUID").getUuid());
+        Resume resume = new Resume("Test_UUID");
+        storage.save(resume);
+        assertEquals(4, storage.size());
+        assertEquals(storage.get("Test_UUID"), resume);
     }
 
-    @Test(expected = NotExistStorageException.class)
+    @Test(expected = ExistStorageException.class)
+    public void saveExist() {
+        storage.save(new Resume(UUID_1));
+    }
+
+    @Test(expected = StorageException.class)
+    public void saveOverflow() {
+        try {
+            for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
+                storage.save(new Resume("uuid_" + i));
+            }
+        } catch (StorageException e){
+            Assert.fail("Переполнение произошло раньше времени");
+        }
+        storage.save(new Resume("uuid_10001"));
+    }
+
+    @Test (expected = NotExistStorageException.class)
     public void delete() {
         storage.delete(UUID_2);
-        Assert.assertThrows(NotExistStorageException.class, (ThrowingRunnable) storage.get(UUID_2));
+        assertEquals(2, storage.size());
+        storage.get(UUID_2);
+    }
+
+    @Test (expected = NotExistStorageException.class)
+    public void deleteNotExist() {
+        storage.delete("dummy");
     }
 
     @Test
     public void getAll() {
-        Assert.assertEquals(new Resume[] {new Resume("uuid1"), new Resume("uuid2"), new Resume("uuid3")}, storage.getAll());
+        Resume[] testStorage = new Resume[]{new Resume("uuid1"), new Resume("uuid2"), new Resume("uuid3")};
+        assertArrayEquals(testStorage, storage.getAll());
     }
 
     @Test
     public void size() {
-        Assert.assertEquals(3, storage.size());
+        assertEquals(3, storage.size());
     }
 
     @Test
     public void get() {
-        Assert.assertEquals(new Resume("uuid1"), storage.get(UUID_1));
+        assertEquals(new Resume("uuid1"), storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -72,20 +106,5 @@ public abstract class AbstractArrayStorageTest {
         storage.get("dummy");
     }
 
-    @Test(expected = ExistStorageException.class)
-    public void getExist() {
-        storage.save(new Resume(UUID_1));
-    }
 
-    @Test(expected = StorageException.class)
-    public void getFullStorage() {
-        try {
-            for (int i = 4; i <= 10000; i++) {
-                storage.save(new Resume("uuid_" + i));
-            }
-        } catch (Exception e){
-            Assert.fail("Переполнение произошло раньше времени");
-        }
-        storage.save(new Resume("uuid_10001"));
-    }
 }
