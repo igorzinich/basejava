@@ -11,7 +11,7 @@ import ru.javawebinar.basejava.model.Resume;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-public abstract class AbstractArrayStorageTest {
+public abstract class AbstractStorageTest {
     private Storage storage;
 
     private static final String UUID_1 = "uuid1";
@@ -22,7 +22,7 @@ public abstract class AbstractArrayStorageTest {
     private static final Resume RESUME_2 = new Resume(UUID_2);
     private static final Resume RESUME_3 = new Resume(UUID_3);
 
-    public AbstractArrayStorageTest(Storage storage) {
+    public AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
