@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    protected List<Resume> storage = new ArrayList<>();
+    private List<Resume> storage = new ArrayList<>();
 
     @Override
-    protected void clearStorage() {
+    public void clear() {
         storage.clear();
     }
 
@@ -35,12 +35,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume[] getAllResumes() {
+    public Resume[] getAll() {
         return storage.toArray(new Resume[storage.size()]);
     }
 
     @Override
-    protected int sizeOfStorage() {
+    public int size() {
         return storage.size();
     }
 

@@ -7,9 +7,7 @@ import ru.javawebinar.basejava.model.Resume;
 public abstract class AbstractStorage implements Storage {
 
     @Override
-    public void clear() {
-        clearStorage();
-    }
+    public abstract void clear();
 
     @Override
     public void update(Resume resume) {
@@ -28,9 +26,8 @@ public abstract class AbstractStorage implements Storage {
         int index = findIndex(uuid);
         if (index >= 0) {
             throw new ExistStorageException(uuid);
-        } else {
-            saveResume(r, index);
         }
+        saveResume(r, index);
     }
 
     @Override
@@ -54,18 +51,12 @@ public abstract class AbstractStorage implements Storage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return getAllResumes();
-    }
+    public abstract Resume[] getAll();
 
     @Override
-    public int size() {
-        return sizeOfStorage();
-    }
+    public abstract int size();
 
     protected abstract int findIndex(String uuid);
-
-    protected abstract void clearStorage();
 
     protected abstract void updateResume(Resume resume, int index);
 
@@ -74,9 +65,4 @@ public abstract class AbstractStorage implements Storage {
     protected abstract Resume getResume(int index);
 
     protected abstract void deleteResume(int index);
-
-    protected abstract Resume[] getAllResumes();
-
-    protected abstract int sizeOfStorage();
-
 }
