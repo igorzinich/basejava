@@ -14,9 +14,9 @@ import static org.junit.Assert.assertEquals;
 public abstract class AbstractStorageTest {
     private Storage storage;
 
-    private static final String UUID_1 = "1";
-    private static final String UUID_2 = "2";
-    private static final String UUID_3 = "3";
+    private static final String UUID_1 = "uuid1";
+    private static final String UUID_2 = "uuid2";
+    private static final String UUID_3 = "uuid3";
 
     private static final Resume RESUME_1 = new Resume(UUID_1);
     private static final Resume RESUME_2 = new Resume(UUID_2);
@@ -54,10 +54,10 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void save() {
-        Resume resume = new Resume("4");
+        Resume resume = new Resume("Test_UUID");
         storage.save(resume);
         assertEquals(4, storage.size());
-        assertEquals(resume, storage.get("4"));
+        assertEquals(resume, storage.get("Test_UUID"));
     }
 
     @Test(expected = ExistStorageException.class)
