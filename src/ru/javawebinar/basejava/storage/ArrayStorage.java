@@ -9,7 +9,7 @@ public class ArrayStorage extends AbstractArrayStorage {
 
 
     @Override
-    protected void saveResumeToArray(Resume r, int index) {
+    protected void saveResumeToArray(Resume r) {
         storage[size] = r;
     }
 
@@ -19,7 +19,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected int findIndex(String uuid) {
+    protected Object searchKey(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;
