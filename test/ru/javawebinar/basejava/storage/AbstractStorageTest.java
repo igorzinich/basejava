@@ -1,18 +1,16 @@
 package ru.javawebinar.basejava.storage;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
-    private Storage storage;
+    protected Storage storage;
 
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
@@ -63,18 +61,6 @@ public abstract class AbstractStorageTest {
     @Test(expected = ExistStorageException.class)
     public void saveExist() {
         storage.save(RESUME_1);
-    }
-
-    @Test(expected = StorageException.class)
-    public void saveOverflow() {
-        try {
-            for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume("uuid_" + i));
-            }
-        } catch (StorageException e){
-            Assert.fail("Переполнение произошло раньше времени");
-        }
-        storage.save(new Resume("uuid_10001"));
     }
 
     @Test (expected = NotExistStorageException.class)
