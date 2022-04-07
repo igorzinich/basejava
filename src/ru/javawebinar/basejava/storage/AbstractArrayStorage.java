@@ -20,30 +20,28 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void updateResume(Resume resume) {
-        String uuid = resume.getUuid();
-        storage[(int) searchKey(uuid)] = resume;
-        System.out.printf("Resume %s updated\n", uuid);
+    public void updateResume(Resume resume, Object searchKey) {
+        storage[(int) searchKey] = resume;
+        System.out.printf("Resume %s updated\n", resume.getUuid());
     }
 
     @Override
-    public void saveResume (Resume r) {
+    public void saveResume(Resume r, Object searchKey) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         }
-        saveResumeToArray(r);
+        saveResumeToArray(r ,(int) searchKey);
         size++;
     }
 
     @Override
-    public Resume getResume(String uuid) {
-        return storage[(int) searchKey(uuid)];
+    public Resume getResume(Object searchKey) {
+        return storage[(int) searchKey];
     }
 
     @Override
-    public void deleteResume(String uuid) {
-        int index = (int) searchKey(uuid);
-        deleteResumeInArray(index);
+    public void deleteResume(Object searchKey) {
+        deleteResumeInArray((int) searchKey);
         storage[size - 1] = null;
         size--;
     }
@@ -58,20 +56,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(String uuid) {
-        int index = (int) searchKey(uuid);
-        return index >= 0;
+    protected boolean isExist(Object searchKey) {
+        return (int) searchKey >= 0;
     }
 
-    @Override
-    protected boolean isExist(Resume resume) {
-        int index = (int) searchKey(resume.getUuid());
-        return index >= 0;
-    }
-
-    protected abstract Object searchKey(String uuid);
-
-    protected abstract void saveResumeToArray(Resume r);
+    protected abstract void saveResumeToArray(Resume resume, int searchKey);
 
     protected abstract void deleteResumeInArray(int index);
 }
