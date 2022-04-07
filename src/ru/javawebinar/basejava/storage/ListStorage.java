@@ -9,11 +9,6 @@ public class ListStorage extends AbstractStorage {
     private List<Resume> storage = new ArrayList<>();
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return (int) searchKey >= 0;
-    }
-
-    @Override
     public void clear() {
         storage.clear();
     }
@@ -57,5 +52,10 @@ public class ListStorage extends AbstractStorage {
             }
         }
         return -1;
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return (int) searchKey >= 0;
     }
 }

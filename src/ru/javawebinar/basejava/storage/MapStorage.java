@@ -14,11 +14,6 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return (String) searchKey != null;
-    }
-
-    @Override
     protected void updateResume(Resume resume, Object searchKey) {
         map.replace((String) searchKey, resume);
         System.out.printf("Resume %s updated\n", resume.getUuid());
@@ -58,4 +53,10 @@ public class MapStorage extends AbstractStorage {
         }
         return null;
     }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return (String) searchKey != null;
+    }
+
 }
