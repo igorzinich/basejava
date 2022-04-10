@@ -4,12 +4,16 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Comparator;
+import java.util.List;
+
 public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume resume) {
         Object searchKey = getExistedSearchKey(resume.getUuid());
         updateResume(resume, searchKey);
+        System.out.printf("Resume %s updated\n", resume.getUuid());
     }
 
     @Override
@@ -45,6 +49,15 @@ public abstract class AbstractStorage implements Storage {
         }
         return searchKeyObject;
     }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> list = copyAllResume();
+        list.sort(Comparator.comparing(Resume::getFullName).thenComparing(Resume::getUuid));
+        return list;
+    }
+
+    protected abstract List<Resume> copyAllResume();
 
     protected abstract boolean isExist(Object searchKey);
 

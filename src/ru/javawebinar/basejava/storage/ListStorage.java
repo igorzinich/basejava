@@ -16,7 +16,6 @@ public class ListStorage extends AbstractStorage {
     @Override
     protected void updateResume(Resume resume, Object searchKey) {
         storage.set((int) searchKey(resume.getUuid()), resume);
-        System.out.printf("Resume %s updated\n", resume.getUuid());
     }
 
     @Override
@@ -35,8 +34,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return storage.toArray(new Resume[storage.size()]);
+    protected List<Resume> copyAllResume() {
+        return new ArrayList<>(storage);
     }
 
     @Override
