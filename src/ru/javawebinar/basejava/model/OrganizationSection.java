@@ -1,11 +1,10 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class OrganizationSection extends AbstractSection {
-    private List<Organization> list = new ArrayList<>();
+    private final List<Organization> list;
 
     public OrganizationSection(List<Organization> list) {
         Objects.requireNonNull(list, "list must not be null");
@@ -18,8 +17,6 @@ public class OrganizationSection extends AbstractSection {
 
     @Override
     public String toString() {
-        return "OrganizationSection{" +
-                "list=" + list +
-                '}';
+        return list.toString() + "\n";
     }
 }

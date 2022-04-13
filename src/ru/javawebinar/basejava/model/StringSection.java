@@ -3,7 +3,7 @@ package ru.javawebinar.basejava.model;
 import java.util.Objects;
 
 public class StringSection extends AbstractSection {
-    private String description;
+    private final String description;
 
     public StringSection(String description) {
         Objects.requireNonNull(description, "description must not be null");

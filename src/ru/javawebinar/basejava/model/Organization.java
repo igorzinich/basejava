@@ -3,12 +3,12 @@ package ru.javawebinar.basejava.model;
 import java.time.LocalDate;
 
 public class Organization {
-    String name;
-    Link link;
-    LocalDate startDate;
-    LocalDate endDate;
-    String head;
-    String description;
+    private String name;
+    private Link link;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private String head;
+    private String description;
 
     public Organization(String name, Link link, LocalDate startDate, LocalDate endDate, String head, String description) {
         this.name = name;
