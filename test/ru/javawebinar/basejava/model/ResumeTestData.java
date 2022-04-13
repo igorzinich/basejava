@@ -60,12 +60,13 @@ public class ResumeTestData {
         resume.getSections().put(SectionType.EXPERIENCE, new OrganizationSection(organizationList));
 
         List<Organization> educationList = new ArrayList<>();
-        educationList.add(new Organization("Coursera", new Link("https://www.coursera.org/course/progfun"), LocalDate.of(2013, 3,1), LocalDate.of(2013,5,1), "'Functional Programming Principles in Scala' by Martin Odersky", null));
-        educationList.add(new Organization("Luxoft", null, LocalDate.of(2011, 3,1), LocalDate.of(2011,4,1), "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'", null));
+        educationList.add(new Organization("Coursera", new Link("https://www.coursera.org/course/progfun"), LocalDate.of(2013, 3, 1), LocalDate.of(2013, 5, 1), "'Functional Programming Principles in Scala' by Martin Odersky", null));
+        educationList.add(new Organization("Luxoft", null, LocalDate.of(2011, 3, 1), LocalDate.of(2011, 4, 1), "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'", null));
 
         resume.getSections().put(SectionType.EDUCATION, new OrganizationSection(educationList));
 
         System.out.println(resume.getContacts().toString());
         System.out.println(resume.getSections().toString());
+
     }
 }
