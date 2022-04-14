@@ -51,8 +51,8 @@ public class ResumeTestData {
         resume.getSections().put(SectionType.ACHIEVEMENT, new ListSection(achievementList));
 
         List<Organization> organizationList = new ArrayList<>();
-        organizationList.add(new Organization("Java Online Projects", new Link("http://javaops.ru/"), LocalDate.of(2013, 10, 1), LocalDate.now(), "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок.\n"));
-        organizationList.add(new Organization("Wrike", new Link("https://www.wrike.com/"), LocalDate.of(2014, 10, 1), LocalDate.of(2016, 1, 1), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.\n"));
+        organizationList.add(new Organization("Java Online Projects", new Link("Javaops", "http://javaops.ru/"), LocalDate.of(2013, 10, 1), LocalDate.now(), "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок.\n"));
+        organizationList.add(new Organization("Wrike", new Link("Wrike", "https://www.wrike.com/"), LocalDate.of(2014, 10, 1), LocalDate.of(2016, 1, 1), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.\n"));
         organizationList.add(new Organization("RIT Center", null, LocalDate.of(2012, 4, 1), LocalDate.of(2014, 10, 1), "Java архитектор", "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway)," +
                 " конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting," +
                 " Unix shell remote scripting via ssh tunnels, PL/Python\n"));
@@ -60,7 +60,7 @@ public class ResumeTestData {
         resume.getSections().put(SectionType.EXPERIENCE, new OrganizationSection(organizationList));
 
         List<Organization> educationList = new ArrayList<>();
-        educationList.add(new Organization("Coursera", new Link("https://www.coursera.org/course/progfun"), LocalDate.of(2013, 3, 1), LocalDate.of(2013, 5, 1), "'Functional Programming Principles in Scala' by Martin Odersky", null));
+        educationList.add(new Organization("Coursera", new Link("Coursera", "https://www.coursera.org/course/progfun"), LocalDate.of(2013, 3, 1), LocalDate.of(2013, 5, 1), "'Functional Programming Principles in Scala' by Martin Odersky", null));
         educationList.add(new Organization("Luxoft", null, LocalDate.of(2011, 3, 1), LocalDate.of(2011, 4, 1), "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'", null));
 
         resume.getSections().put(SectionType.EDUCATION, new OrganizationSection(educationList));
