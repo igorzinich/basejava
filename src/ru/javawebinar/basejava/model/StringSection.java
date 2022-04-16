@@ -18,4 +18,19 @@ public class StringSection extends AbstractSection {
     public String toString() {
         return description + "\n";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        StringSection that = (StringSection) o;
+
+        return Objects.equals(description, that.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return description.hashCode();
+    }
 }

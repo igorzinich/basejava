@@ -1,12 +1,15 @@
 package ru.javawebinar.basejava.model;
 
+import ru.javawebinar.basejava.util.DateUtil;
+
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ResumeTestData {
-    public static void main(String[] args) {
-        Resume resume = new Resume("01", "Григорий Кислин");
+    public static Resume createResume(String uuid, String fullName){
+        Resume resume = new Resume(uuid, fullName);
         resume.getContacts().put(ContactType.MOBILE_NUMBER, "+7(921) 855-0482");
         resume.getContacts().put(ContactType.EMAIL, "gkislin@yandex.ru");
         resume.getContacts().put(ContactType.SKYPE, "skype:grigory.kislin");
@@ -51,19 +54,35 @@ public class ResumeTestData {
         resume.getSections().put(SectionType.ACHIEVEMENT, new ListSection(achievementList));
 
         List<Organization> organizationList = new ArrayList<>();
-        organizationList.add(new Organization("Java Online Projects", new Link("Javaops", "http://javaops.ru/"), LocalDate.of(2013, 10, 1), LocalDate.now(), "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок.\n"));
-        organizationList.add(new Organization("Wrike", new Link("Wrike", "https://www.wrike.com/"), LocalDate.of(2014, 10, 1), LocalDate.of(2016, 1, 1), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.\n"));
-        organizationList.add(new Organization("RIT Center", null, LocalDate.of(2012, 4, 1), LocalDate.of(2014, 10, 1), "Java архитектор", "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway)," +
+
+        organizationList.add(new Organization("Java Online Projects", "http://javaops.ru/", new Organization.Position(DateUtil.of(2013, Month.OCTOBER), LocalDate.now(), "Автор проекта.", "Создание, организация и проведение Java онлайн проектов и стажировок.\n")));
+        organizationList.add(new Organization("Wrike", "https://www.wrike.com/", new Organization.Position(DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2016, Month.JANUARY), "Старший разработчик (backend)", "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.\n")));
+        organizationList.add(new Organization("RIT Center", null, new Organization.Position(DateUtil.of(2012, Month.APRIL), DateUtil.of(2014, Month.OCTOBER), "Java архитектор", "Организация процесса разработки системы ERP для разных окружений: релизная политика, версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway)," +
                 " конфигурирование системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка интергационных сервисов: CMIS, BPMN2, 1C (WebServices), сервисов общего назначения (почта, экспорт в pdf, doc, html). Интеграция Alfresco JLAN для online редактирование из браузера документов MS Office. Maven + plugin development, Ant, Apache Commons, Spring security, Spring MVC, Tomcat,WSO2, xcmis, OpenCmis, Bonita, Python scripting," +
-                " Unix shell remote scripting via ssh tunnels, PL/Python\n"));
+                " Unix shell remote scripting via ssh tunnels, PL/Python\n")));
 
         resume.getSections().put(SectionType.EXPERIENCE, new OrganizationSection(organizationList));
 
         List<Organization> educationList = new ArrayList<>();
-        educationList.add(new Organization("Coursera", new Link("Coursera", "https://www.coursera.org/course/progfun"), LocalDate.of(2013, 3, 1), LocalDate.of(2013, 5, 1), "'Functional Programming Principles in Scala' by Martin Odersky", null));
-        educationList.add(new Organization("Luxoft", null, LocalDate.of(2011, 3, 1), LocalDate.of(2011, 4, 1), "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'", null));
+        List<Organization.Position> positionList = new ArrayList<>();
+
+        educationList.add(new Organization("Coursera", "https://www.coursera.org/course/progfun", new Organization.Position(DateUtil.of(2013, Month.MARCH), DateUtil.of(2013, Month.MAY), "'Functional Programming Principles in Scala' by Martin Odersky", null)));
+        educationList.add(new Organization("Luxoft", null, new Organization.Position(DateUtil.of(2011, Month.MARCH), DateUtil.of(2011, Month.APRIL), "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'", null)));
+        educationList.add(new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", "http://www.ifmo.ru/",
+                new Organization.Position(DateUtil.of(1993, Month.SEPTEMBER), DateUtil.of(1996, Month.JULY), "Аспирантура (программист С, С++)", null),
+                new Organization.Position(DateUtil.of(1987, Month.SEPTEMBER), DateUtil.of(1993, Month.JULY), "Инженер (программист Fortran, C)", null)));
 
         resume.getSections().put(SectionType.EDUCATION, new OrganizationSection(educationList));
+
+        return resume;
+    }
+
+
+
+    public static void main(String[] args) {
+        String uuid = "01";
+        String fullName = "Grigoriy Kislin";
+        Resume resume = createResume(uuid, fullName);
 
         System.out.println(resume.getContacts().toString());
         System.out.println(resume.getSections().toString());
