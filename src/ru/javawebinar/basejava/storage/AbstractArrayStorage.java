@@ -41,7 +41,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     public void deleteResume(Integer index) {
-        deleteResumeInArray( index);
+        deleteResumeInArray(index);
         storage[size - 1] = null;
         size--;
     }
@@ -57,7 +57,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     protected boolean isExist(Integer index) {
-        return  index >= 0;
+        return index >= 0;
     }
 
     protected abstract void saveResumeToArray(Resume resume, int index);

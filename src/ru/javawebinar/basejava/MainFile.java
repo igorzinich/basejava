@@ -25,19 +25,21 @@ public class MainFile {
             throw new RuntimeException(e);
         }*/
 
-        File directory = new File("D:\\Java\\basejava");
-        printAllFiles(directory);
+        File directory = new File("./src/ru/javawebinar/basejava");
+        printDirectoryDeeply(directory);
     }
 
-    private static void printAllFiles(File directory) {
-        File[] folderEntries = directory.listFiles();
-        if (folderEntries != null) {
-            for (File entry : folderEntries) {
-                if (entry.isDirectory()) {
-                    System.out.println("Папка: " + entry.getName());
-                    printAllFiles(entry);
+    private static void printDirectoryDeeply(File directory) {
+        File[] files = directory.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    System.out.println("    Имя файла: " + file.getName());
+                } else if (file.isDirectory()) {
+                    System.out.println("Папка: " + file.getName());
+                    printDirectoryDeeply(file);
                 }
-                System.out.println("Имя файла: " + entry.getName());
             }
         }
     }
