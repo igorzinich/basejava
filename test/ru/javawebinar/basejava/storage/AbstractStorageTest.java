@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public abstract class AbstractStorageTest {
     protected static final File STORAGE_DIR = new File ("D:\\Java\\basejava\\storage");
@@ -22,9 +23,9 @@ public abstract class AbstractStorageTest {
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
 
-    private static final Resume RESUME_1 = ResumeTestData.createResume(UUID_1, "Name1");
-    private static final Resume RESUME_2 = ResumeTestData.createResume(UUID_2, "Name2");
-    private static final Resume RESUME_3 = ResumeTestData.createResume(UUID_3, "Name3");
+    private static final Resume RESUME_1 = new Resume(UUID_1, "Name1");
+    private static final Resume RESUME_2 = new Resume(UUID_2, "Name2");
+    private static final Resume RESUME_3 = new Resume(UUID_3, "Name3");
 
     public AbstractStorageTest(Storage storage) {
         this.storage = storage;
@@ -46,9 +47,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume resume = ResumeTestData.createResume(UUID_1, "New Name");
+        Resume resume = new Resume(UUID_1, "New Name");
         storage.update(resume);
-        assertEquals(resume, storage.get(UUID_1));
+        assertTrue(resume.equals(storage.get(UUID_1)));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -58,7 +59,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void save() {
-        Resume resume = ResumeTestData.createResume("Test_UUID", "New Name");
+        Resume resume = new Resume("Test_UUID", "New Name");
         storage.save(resume);
         assertEquals(4, storage.size());
         assertEquals(resume, storage.get("Test_UUID"));
@@ -94,7 +95,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() {
-        assertEquals(RESUME_1, storage.get(UUID_1));
+        assertEquals(RESUME_1, storage.get(RESUME_1.getUuid()));
     }
 
     @Test(expected = NotExistStorageException.class)
