@@ -25,20 +25,20 @@ public class MainFile {
             throw new RuntimeException(e);
         }*/
 
-        File directory = new File("./src/ru/javawebinar/basejava");
-        printDirectoryDeeply(directory);
+        File directory = new File("./src");
+        printDirectoryDeeply(directory, "");
     }
 
-    private static void printDirectoryDeeply(File directory) {
+    private static void printDirectoryDeeply(File directory, String offset) {
         File[] files = directory.listFiles();
 
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    System.out.println("    Имя файла: " + file.getName());
+                    System.out.println(offset + "Имя файла: " + file.getName());
                 } else if (file.isDirectory()) {
-                    System.out.println("Папка: " + file.getName());
-                    printDirectoryDeeply(file);
+                    System.out.println(offset + "Папка: " + file.getName());
+                    printDirectoryDeeply(file, offset + "  ");
                 }
             }
         }
