@@ -3,18 +3,21 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
 
-    private Serializer serializer;
+    private final Serializer serializer;
 
     protected PathStorage(String dir, Serializer serializer) {
         directory = Paths.get(dir);
@@ -27,11 +30,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> copyAllResume() {
-        try {
-            return Files.list(directory).map(this::getResume).collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new StorageException("Directory read error", getFileName(directory), e);
-        }
+        return getFilesList().map(this::getResume).collect(Collectors.toList());
     }
 
     @Override
@@ -67,10 +66,6 @@ public class PathStorage extends AbstractStorage<Path> {
         }
     }
 
-    private String getFileName(Path path) {
-        return path.getFileName().toString();
-    }
-
     @Override
     protected void deleteResume(Path path) {
         try {
@@ -87,20 +82,24 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::deleteResume);
-        } catch (IOException e) {
-            throw new StorageException("Path delete error", null);
-        }
-
+        getFilesList().forEach(this::deleteResume);
     }
 
     @Override
     public int size() {
+        return (int) getFilesList().count();
+    }
+
+    private String getFileName(Path path) {
+        return path.getFileName().toString();
+    }
+
+    private Stream<Path> getFilesList() {
         try {
-            return (int) Files.list(directory).count();
+            return Files.list(directory);
         } catch (IOException e) {
             throw new StorageException("Directory read error", getFileName(directory), e);
         }
     }
+
 }
