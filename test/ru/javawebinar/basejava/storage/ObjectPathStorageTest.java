@@ -1,10 +1,8 @@
 package ru.javawebinar.basejava.storage;
 
-import static org.junit.Assert.*;
+public class ObjectPathStorageTest extends AbstractStorageTest {
 
-public class PathStorageTest extends AbstractStorageTest {
-
-    public PathStorageTest() {
+    public ObjectPathStorageTest() {
         super(new PathStorage(STORAGE_DIR.getAbsolutePath(), new ObjectStreamStorage()));
     }
 }

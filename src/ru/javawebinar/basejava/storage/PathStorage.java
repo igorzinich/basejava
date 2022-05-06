@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.serializer.StreamSerializer;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -17,11 +18,11 @@ import java.util.stream.Stream;
 public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
 
-    private final Serializer serializer;
+    private final StreamSerializer streamSerializer;
 
-    protected PathStorage(String dir, Serializer serializer) {
+    protected PathStorage(String dir, StreamSerializer streamSerializer) {
         directory = Paths.get(dir);
-        this.serializer = serializer;
+        this.streamSerializer = streamSerializer;
         Objects.requireNonNull(directory, "directory must not be null");
         if (!Files.isDirectory(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
@@ -41,7 +42,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void updateResume(Resume resume, Path path) {
         try {
-            serializer.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
+            streamSerializer.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path write error", resume.getUuid(), e);
         }
@@ -60,7 +61,7 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume getResume(Path path) {
         try {
-            return serializer.doRead(new BufferedInputStream(Files.newInputStream(path)));
+            return streamSerializer.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path read error", getFileName(path), e);
         }

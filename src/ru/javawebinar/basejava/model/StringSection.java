@@ -5,7 +5,10 @@ import java.util.Objects;
 public class StringSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
 
-    private final String description;
+    private String description;
+
+    public StringSection() {
+    }
 
     public StringSection(String description) {
         Objects.requireNonNull(description, "description must not be null");
