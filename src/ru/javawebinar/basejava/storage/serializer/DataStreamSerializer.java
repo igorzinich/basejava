@@ -32,23 +32,20 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case QUALIFICATIONS:
                     case ACHIEVEMENT:
-                        List<String> items = ((ListSection) section).getItems();
-                        dos.writeUTF(items.toString());
+                        writeCollection(dos, ((ListSection) section).getItems(), dos :: writeUTF);
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
-                        List<Organization> listOrganizations = ((OrganizationSection) section).getListOrganizations();
-                        for (Organization organization : listOrganizations) {
+                        writeCollection(dos, ((OrganizationSection) section).getListOrganizations(), organization -> {
                             dos.writeUTF(organization.getHomePage().getName());
                             dos.writeUTF(organization.getHomePage().getUrl());
-                            List<Organization.Position> positions = organization.getPositions();
-                            for (Organization.Position position : positions) {
+                            writeCollection(dos, organization.getPositions(), position -> {
                                 writeLocalDate(position.getStartDate(), dos);
                                 writeLocalDate(position.getEndDate(), dos);
                                 dos.writeUTF(position.getTitle());
                                 dos.writeUTF(position.getDescription());
-                            }
-                        }
+                            });
+                        });
                         break;
                 }
             });
@@ -73,14 +70,14 @@ public class DataStreamSerializer implements StreamSerializer {
 
     @Override
     public Resume doRead(InputStream is) throws IOException {
-        try (DataInputStream dis = new DataInputStream(is)) {
+            try (DataInputStream dis = new DataInputStream(is)) {
             String uuid = dis.readUTF();
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
             readItems(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
             readItems(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
-                resume.addSection(sectionType, readSection(sectionType, dis));
+                resume.addSection(sectionType, DataStreamSerializer.this.readSection(sectionType, dis));
             });
             return resume;
         }

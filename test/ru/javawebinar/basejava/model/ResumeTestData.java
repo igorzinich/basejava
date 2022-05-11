@@ -61,7 +61,6 @@ public class ResumeTestData {
         resume.addSection(SectionType.EXPERIENCE, new OrganizationSection(organizationList));
 
         List<Organization> educationList = new ArrayList<>();
-        List<Organization.Position> positionList = new ArrayList<>();
 
         educationList.add(new Organization("Coursera", "https://www.coursera.org/course/progfun", new Organization.Position(2013, Month.MARCH, 2013, Month.MAY, "'Functional Programming Principles in Scala' by Martin Odersky", null)));
         educationList.add(new Organization("Luxoft", null, new Organization.Position(2011, Month.MARCH, 2011, Month.APRIL, "Курс 'Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.'", null)));
