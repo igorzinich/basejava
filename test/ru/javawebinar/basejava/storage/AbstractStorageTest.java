@@ -96,9 +96,6 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() {
-        System.out.println(RESUME_1.getSections().equals((storage.get(RESUME_1.getUuid()).getSections())) ? "true" : false);
-        System.out.println("RESUME_1: " + RESUME_1.getSections());
-        System.out.println("resume_1: " + storage.get(RESUME_1.getUuid()).getSections());
         assertEquals(RESUME_1, storage.get(RESUME_1.getUuid()));
         assertEquals(RESUME_2, storage.get(RESUME_2.getUuid()));
         assertEquals(RESUME_3, storage.get(RESUME_3.getUuid()));
