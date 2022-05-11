@@ -6,7 +6,7 @@ import ru.javawebinar.basejava.util.JsonParser;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
-public class JsonStreamSerializer implements StreamSerializer{
+public class JsonStreamSerializer implements StreamSerializer {
     @Override
     public void doWrite(Resume r, OutputStream os) throws IOException {
         try (Writer writer = new OutputStreamWriter(os, StandardCharsets.UTF_8)) {
