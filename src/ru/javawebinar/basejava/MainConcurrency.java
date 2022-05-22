@@ -90,12 +90,7 @@ public class MainConcurrency {
 
         System.out.println(minValue(new int[]{1, 2, 3, 2, 2, 3}));
 
-        List<Integer> integers = new ArrayList<>();
-        integers.add(1);
-        integers.add(2);
-        integers.add(3);
-        integers.add(5);
-        integers.add(7);
+        List<Integer> integers = new ArrayList<>(Arrays.asList(1,2,3,5,6));
         System.out.println(oddOrEven(integers));
     }
 
