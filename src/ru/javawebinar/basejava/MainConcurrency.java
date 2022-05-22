@@ -1,8 +1,12 @@
 package ru.javawebinar.basejava;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class MainConcurrency {
     public static final int THREADS_NUMBER = 10000;
@@ -84,7 +88,30 @@ public class MainConcurrency {
 //        deadLock(lock1, lock2);
 //        deadLock(lock2, lock1);
 
+        System.out.println(minValue(new int[]{1, 2, 3, 2, 2, 3}));
 
+        List<Integer> integers = new ArrayList<>();
+        integers.add(1);
+        integers.add(2);
+        integers.add(3);
+        integers.add(5);
+        integers.add(7);
+        System.out.println(oddOrEven(integers));
+    }
+
+    private static int minValue(int[] values) {
+        return Arrays.stream(values)
+                .distinct()
+                .sorted()
+                .reduce(0, (a, b) -> 10 * a + b);
+    }
+
+    private static List<Integer> oddOrEven(List<Integer> integers) {
+        return integers
+                .stream()
+                .filter(integers.stream().mapToInt(Integer::intValue)
+                        .sum() % 2 != 0 ? n -> n % 2 == 0 : n -> n % 2 != 0)
+                .collect(Collectors.toList());
     }
 
     private static void deadLock(Object lock1, Object lock2) {
@@ -109,7 +136,7 @@ public class MainConcurrency {
 //        synchronized (MainConcurrency.class) {
 //        lock.lock();
 //        try {
-            atomicInteger.incrementAndGet();
+        atomicInteger.incrementAndGet();
 //            counter++;
 //        } finally {
 //            lock.unlock();
