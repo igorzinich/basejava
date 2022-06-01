@@ -6,10 +6,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class TransactionExecute {
+public class SqlHelper {
     ConnectionFactory connectionFactory;
 
-    public TransactionExecute(ConnectionFactory connectionFactory) {
+    public SqlHelper(ConnectionFactory connectionFactory) {
         this.connectionFactory = connectionFactory;
     }
 
