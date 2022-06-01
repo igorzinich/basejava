@@ -7,6 +7,7 @@ import java.util.List;
 public class ResumeTestData {
     public static Resume createResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
+/*
         resume.addContact(ContactType.MOBILE_NUMBER, "+7(921) 855-0482");
         resume.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
         resume.addContact(ContactType.SKYPE, "skype:grigory.kislin");
@@ -69,6 +70,7 @@ public class ResumeTestData {
                 new Organization.Position(1987, Month.SEPTEMBER, 1993, Month.JULY, "Инженер (программист Fortran, C)", null)));
 
         resume.addSection(SectionType.EDUCATION, new OrganizationSection(educationList));
+*/
 
         return resume;
     }
