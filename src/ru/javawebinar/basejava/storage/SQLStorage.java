@@ -46,13 +46,7 @@ public class SQLStorage implements Storage {
         sqlHelper.execute("INSERT INTO resume (uuid, full_name) VALUES (?,?)", ps -> {
             ps.setString(1, r.getUuid());
             ps.setString(2, r.getFullName());
-            try {
-                ps.execute();
-            } catch (PSQLException e){
-                if (e.getSQLState().equals("23505")){
-                    throw new ExistStorageException(r.getUuid());
-                }
-            }
+            ps.execute();
             return null;
         });
     }
