@@ -129,6 +129,7 @@ public class SQLStorage implements Storage {
             return null;
         });
     }
+
     private Object insertContact(Resume r, Connection conn) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
             for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
@@ -145,7 +146,7 @@ public class SQLStorage implements Storage {
     private void addContact(Resume r, ResultSet rs) throws SQLException {
         String value = rs.getString("value");
         ContactType type = ContactType.valueOf(rs.getString("type"));
-        if (value != null){
+        if (value != null) {
             r.addContact(type, value);
         }
     }
