@@ -37,6 +37,10 @@ public class Resume implements Serializable {
         this.fullName = fullName;
     }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public String getUuid() {
         return uuid;
     }
@@ -61,6 +65,14 @@ public class Resume implements Serializable {
         return sections;
     }
 
+    public String getContact(ContactType type) {
+        return contacts.get(type);
+    }
+
+    public AbstractSection getSection(SectionType type) {
+        return sections.get(type);
+    }
+
     @Override
     public String toString() {
         return uuid + '(' + fullName + ')';
@@ -81,4 +93,5 @@ public class Resume implements Serializable {
     public int hashCode() {
         return Objects.hash(uuid, fullName, contacts, sections);
     }
+
 }

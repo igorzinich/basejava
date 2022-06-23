@@ -151,20 +151,22 @@ public class SQLStorage implements Storage {
     }
 
     private void deleteContacts(Resume resume, Connection conn) throws SQLException {
-        try (PreparedStatement ps = conn.prepareStatement("DELETE  FROM contact WHERE resume_uuid=?")) {
-            ps.setString(1, resume.getUuid());
-            ps.execute();
-        }
+        deleteAttributes(conn, resume, "DELETE  FROM contact WHERE resume_uuid=?");
     }
 
     private void deleteSections(Resume resume, Connection conn) throws SQLException {
-        try (PreparedStatement ps = conn.prepareStatement("DELETE  FROM section WHERE resume_uuid=?")) {
-            ps.setString(1, resume.getUuid());
+        deleteAttributes(conn, resume, "DELETE  FROM section WHERE resume_uuid=?");
+    }
+
+    private void deleteAttributes(Connection conn, Resume r, String sql) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, r.getUuid());
             ps.execute();
         }
     }
 
-    private Object insertContacts(Resume r, Connection conn) throws SQLException {
+
+    private void insertContacts(Resume r, Connection conn) throws SQLException {
         try (PreparedStatement ps = conn.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
             for (Map.Entry<ContactType, String> e : r.getContacts().entrySet()) {
                 ps.setString(1, r.getUuid());
@@ -174,7 +176,6 @@ public class SQLStorage implements Storage {
             }
             ps.executeBatch();
         }
-        return null;
     }
 
     private void addContact(Resume r, ResultSet rs) throws SQLException {
