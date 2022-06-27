@@ -1,8 +1,7 @@
 package ru.javawebinar.basejava.web;
 
 import ru.javawebinar.basejava.Config;
-import ru.javawebinar.basejava.model.ContactType;
-import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.storage.Storage;
 
 import javax.servlet.ServletConfig;
@@ -11,7 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
 
@@ -28,11 +28,11 @@ public class ResumeServlet extends HttpServlet {
         String fullName = request.getParameter("fullName");
         Resume r = storage.get(uuid);
         r.setFullName(fullName);
-        for (ContactType type : ContactType.values()){
+        for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
             if (value != null && value.trim().length() != 0) {
                 r.addContact(type, value);
-            } else{
+            } else {
                 r.getContacts().remove(type);
             }
         }
@@ -43,13 +43,13 @@ public class ResumeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws javax.servlet.ServletException, IOException {
         String uuid = request.getParameter("uuid");
         String action = request.getParameter("action");
-        if (action == null){
+        if (action == null) {
             request.setAttribute("resumes", storage.getAllSorted());
             request.getRequestDispatcher("WEB-INF/jsp/list.jsp").forward(request, response);
             return;
         }
         Resume r;
-        switch (action){
+        switch (action) {
             case "delete":
                 storage.delete(uuid);
                 response.sendRedirect("resume");
@@ -57,6 +57,24 @@ public class ResumeServlet extends HttpServlet {
             case "view":
             case "edit":
                 r = storage.get(uuid);
+                if (r.getSection(SectionType.PERSONAL) == null) {
+                    r.addSection(SectionType.PERSONAL, new StringSection(""));
+                }
+                if (r.getSection(SectionType.OBJECTIVE) == null) {
+                    r.addSection(SectionType.OBJECTIVE, new StringSection(""));
+                }
+                if (r.getSection(SectionType.ACHIEVEMENT) == null){
+                    r.addSection(SectionType.ACHIEVEMENT, new ListSection(""));
+                }
+                if (r.getSection(SectionType.QUALIFICATIONS) == null){
+                    r.addSection(SectionType.QUALIFICATIONS, new ListSection(""));
+                }
+                if (r.getSection(SectionType.EXPERIENCE) ==null){
+                    r.addSection(SectionType.EXPERIENCE, new OrganizationSection(Organization.EMPTY));
+                }
+                if (r.getSection(SectionType.EDUCATION) == null){
+                    r.addSection(SectionType.EDUCATION, new OrganizationSection(Organization.EMPTY));
+                }
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " is illegal");
