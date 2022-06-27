@@ -29,7 +29,6 @@
         <c:forEach var="type" items="<%=SectionType.values()%>">
             <c:set var="section" value="${resume.getSection(type)}"/>
             <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
-
             <h3>${type.title}</h3>
             <c:choose>
                 <c:when test="${type == 'PERSONAL' || type =='OBJECTIVE'}">
@@ -39,13 +38,11 @@
                     <textarea name="textarea" cols="95"
                               rows="10"><%=String.join("\n", ((ListSection) section).getItems())%></textarea>
                 </c:when>
-
-
             </c:choose>
         </c:forEach>
         <hr>
         <button type="submit">Сохранить</button>
-        <button onclick="window.history.back()">Отменить</button>
+        <button type="reset" onclick="window.history.back()">Отменить</button>
     </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
