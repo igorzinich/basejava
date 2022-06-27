@@ -24,42 +24,42 @@
     </p>
 
     <hr>
-        <c:forEach var="sectionEntry" items="${resume.sections}">
-            <jsp:useBean id="sectionEntry"
-                         type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType, ru.javawebinar.basejava.model.AbstractSection>"/>
-            <c:set var="type" value="${sectionEntry.key}"/>
-            <c:set var="section" value="${sectionEntry.value}"/>
-            <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
-            <h2>${type.title}</h2>
-            <c:choose>
-                <c:when test="${type == 'PERSONAL' || type =='OBJECTIVE'}">
-                    <%=((StringSection) section).getDescription()%>
-                </c:when>
+    <c:forEach var="sectionEntry" items="${resume.sections}">
+        <jsp:useBean id="sectionEntry"
+                     type="java.util.Map.Entry<ru.javawebinar.basejava.model.SectionType, ru.javawebinar.basejava.model.AbstractSection>"/>
+        <c:set var="type" value="${sectionEntry.key}"/>
+        <c:set var="section" value="${sectionEntry.value}"/>
+        <jsp:useBean id="section" type="ru.javawebinar.basejava.model.AbstractSection"/>
+        <h2>${type.title}</h2>
+        <c:choose>
+            <c:when test="${type == 'PERSONAL' || type =='OBJECTIVE'}">
+                <%=((StringSection) section).getDescription()%>
+            </c:when>
 
-                <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
-                    <c:forEach var="item" items="<%=((ListSection) section).getItems()%>">
-                        <ul>
-                            <li>${item}</li>
-                        </ul>
-                    </c:forEach>
-                </c:when>
+            <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
+                <c:forEach var="item" items="<%=((ListSection) section).getItems()%>">
+                    <ul>
+                        <li>${item}</li>
+                    </ul>
+                </c:forEach>
+            </c:when>
 
-                <c:when test="${type == 'EXPERIENCE' || type == 'EDUCATION'}">
-                    <c:forEach var="listOrganizations"
-                               items="<%=((OrganizationSection) section).getListOrganizations()%>">
-                        <c:forEach var="position" items="${listOrganizations.positions}">
-                            <table>
-                                <h3 style="text-align: center">${listOrganizations.homePage.name}</h3>
-                                <tr>
-                                    <td width="170" style="vertical-align: top">${position.startDate} - ${position.endDate}</td>
-                                    <td><b>${position.title}</b><br>${position.description}</td>
-                                </tr>
-                            </table>
-                        </c:forEach>
+            <c:when test="${type == 'EXPERIENCE' || type == 'EDUCATION'}">
+                <c:forEach var="listOrganizations"
+                           items="<%=((OrganizationSection) section).getListOrganizations()%>">
+                    <c:forEach var="position" items="${listOrganizations.positions}">
+                        <table>
+                            <h3 style="text-align: center">${listOrganizations.homePage.name}</h3>
+                            <tr>
+                                <td width="170" style="vertical-align: top">${position.startDate} - ${position.endDate}</td>
+                                <td><b>${position.title}</b><br>${position.description}</td>
+                            </tr>
+                        </table>
                     </c:forEach>
-                </c:when>
-            </c:choose>
-        </c:forEach>
+                </c:forEach>
+            </c:when>
+        </c:choose>
+    </c:forEach>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
