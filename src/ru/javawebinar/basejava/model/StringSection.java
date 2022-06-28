@@ -21,7 +21,7 @@ public class StringSection extends AbstractSection {
 
     @Override
     public String toString() {
-        return description + "\n";
+        return description;
     }
 
     @Override

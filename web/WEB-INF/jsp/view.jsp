@@ -19,7 +19,6 @@
             <jsp:useBean id="contactEntry"
                          type="java.util.Map.Entry<ru.javawebinar.basejava.model.ContactType, java.lang.String>"/>
             <%=contactEntry.getKey().toHtml(contactEntry.getValue())%><br/>
-
         </c:forEach>
     </p>
 
@@ -33,17 +32,15 @@
         <h2>${type.title}</h2>
         <c:choose>
             <c:when test="${type == 'PERSONAL' || type =='OBJECTIVE'}">
-                <%=((StringSection) section).getDescription()%>
+                    <%=((StringSection) section).getDescription()%>
             </c:when>
-
             <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
-                <c:forEach var="item" items="<%=((ListSection) section).getItems()%>">
-                    <ul>
-                        <li>${item}</li>
-                    </ul>
-                </c:forEach>
+                    <c:forEach var="item" items="<%=((ListSection) section).getItems()%>">
+                        <ul>
+                            <li>${item}</li>
+                        </ul>
+                    </c:forEach>
             </c:when>
-
             <c:when test="${type == 'EXPERIENCE' || type == 'EDUCATION'}">
                 <c:forEach var="listOrganizations"
                            items="<%=((OrganizationSection) section).getListOrganizations()%>">
@@ -51,7 +48,8 @@
                         <table>
                             <h3 style="text-align: center">${listOrganizations.homePage.name}</h3>
                             <tr>
-                                <td width="170" style="vertical-align: top">${position.startDate} - ${position.endDate}</td>
+                                <td width="170" style="vertical-align: top">${position.startDate}
+                                    - ${position.endDate}</td>
                                 <td><b>${position.title}</b><br>${position.description}</td>
                             </tr>
                         </table>

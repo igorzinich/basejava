@@ -36,6 +36,14 @@ public class ResumeServlet extends HttpServlet {
                 r.getContacts().remove(type);
             }
         }
+/*        for (SectionType type : SectionType.values()) {
+            String value = request.getParameter(type.name());
+            String[] values = request.getParameterValues(type.name());
+            if (value == null && values.length < 2){
+                r.getSections().remove(type);
+            }
+        }*/
+
         storage.update(r);
         response.sendRedirect("resume");
     }
@@ -55,25 +63,35 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("resume");
                 return;
             case "view":
+                r = storage.get(uuid);
+                break;
             case "edit":
                 r = storage.get(uuid);
-                if (r.getSection(SectionType.PERSONAL) == null) {
-                    r.addSection(SectionType.PERSONAL, new StringSection(""));
-                }
-                if (r.getSection(SectionType.OBJECTIVE) == null) {
-                    r.addSection(SectionType.OBJECTIVE, new StringSection(""));
-                }
-                if (r.getSection(SectionType.ACHIEVEMENT) == null){
-                    r.addSection(SectionType.ACHIEVEMENT, new ListSection(""));
-                }
-                if (r.getSection(SectionType.QUALIFICATIONS) == null){
-                    r.addSection(SectionType.QUALIFICATIONS, new ListSection(""));
-                }
-                if (r.getSection(SectionType.EXPERIENCE) ==null){
-                    r.addSection(SectionType.EXPERIENCE, new OrganizationSection(Organization.EMPTY));
-                }
-                if (r.getSection(SectionType.EDUCATION) == null){
-                    r.addSection(SectionType.EDUCATION, new OrganizationSection(Organization.EMPTY));
+                for (SectionType type : SectionType.values()) {
+                    AbstractSection section = r.getSection(type);
+                    switch (type) {
+                        case PERSONAL:
+                        case OBJECTIVE:
+                            if (section == null) {
+                                section = new StringSection("");
+                            }
+                            break;
+                        case ACHIEVEMENT:
+                        case QUALIFICATIONS:
+                            if (section == null) {
+                                section = new ListSection("");
+                            }
+                            break;
+                        case EXPERIENCE:
+                        case EDUCATION:
+                            List<Organization> emptyOrganizations = new ArrayList<>();
+                            emptyOrganizations.add(Organization.EMPTY);
+                            if (section == null) {
+                                section = new OrganizationSection(emptyOrganizations);
+                            }
+                            break;
+                    }
+                    r.addSection(type, section);
                 }
                 break;
             default:
