@@ -38,10 +38,10 @@ public class ResumeServlet extends HttpServlet {
                 r.getContacts().remove(type);
             }
         }
-       for (SectionType type : SectionType.values()) {
+        for (SectionType type : SectionType.values()) {
             String value = request.getParameter(type.name());
             String[] values = request.getParameterValues(type.name());
-            if (HtmlUtil.isEmpty(value)){
+            if (HtmlUtil.isEmpty(value)) {
                 r.getSections().remove(type);
             } else {
                 switch (type) {
@@ -55,26 +55,6 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        List<Organization> organizations = new ArrayList<>();
-                        String[] urls = request.getParameterValues(type.name() + "url");
-                        for (int i = 0; i < values.length; i++) {
-                            String name = values[i];
-                            if (!HtmlUtil.isEmpty(name)) {
-                                List<Organization.Position> positions = new ArrayList<>();
-                                String pfx = type.name() + i;
-                                String[] startDates = request.getParameterValues(pfx + "startDate");
-                                String[] endDates = request.getParameterValues(pfx + "endDate");
-                                String[] titles = request.getParameterValues(pfx + "title");
-                                String[] descriptions = request.getParameterValues(pfx + "description");
-                                for (int j = 0; j < titles.length; j++) {
-                                    if (!HtmlUtil.isEmpty(titles[j])) {
-                                        positions.add(new Organization.Position(LocalDate.parse(startDates[j]), LocalDate.parse(endDates[j]), titles[j], descriptions[j]));
-                                    }
-                                }
-                                organizations.add(new Organization(new Link(name, urls[i]), positions));
-                            }
-                        }
-                        r.addSection(type, new OrganizationSection(organizations));
                         break;
                 }
             }
@@ -119,17 +99,8 @@ public class ResumeServlet extends HttpServlet {
                             break;
                         case EXPERIENCE:
                         case EDUCATION:
-                            OrganizationSection organizationSection = (OrganizationSection) section;
                             List<Organization> emptyFirstOrganizations = new ArrayList<>();
                             emptyFirstOrganizations.add(Organization.EMPTY);
-                            if (organizationSection != null) {
-                                for (Organization org : organizationSection.getListOrganizations()) {
-                                    List<Organization.Position> emptyFirstPositions = new ArrayList<>();
-                                    emptyFirstPositions.add(Organization.Position.EMPTY);
-                                    emptyFirstPositions.addAll(org.getPositions());
-                                    emptyFirstOrganizations.add(new Organization(org.getHomePage(), emptyFirstPositions));
-                                }
-                            }
                             section = new OrganizationSection(emptyFirstOrganizations);
                             break;
                     }
