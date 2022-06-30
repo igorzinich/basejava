@@ -1,5 +1,6 @@
 package ru.javawebinar.basejava.web;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
 import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.storage.Storage;
@@ -27,8 +28,15 @@ public class ResumeServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String uuid = request.getParameter("uuid");
         String fullName = request.getParameter("fullName");
-        Resume r = storage.get(uuid);
-        r.setFullName(fullName);
+
+        Resume r;
+        if (uuid == null || uuid.length() == 0){
+            r = new Resume(fullName);
+        } else {
+            r = storage.get(uuid);
+            r.setFullName(fullName);
+        }
+
         for (ContactType type : ContactType.values()) {
             String value = request.getParameter(type.name());
             if (value != null && value.trim().length() != 0) {
@@ -57,7 +65,12 @@ public class ResumeServlet extends HttpServlet {
                 }
             }
         }
-        storage.update(r);
+
+        if (uuid == null || uuid.length() == 0){
+            storage.save(r);
+        } else {
+            storage.update(r);
+        }
         response.sendRedirect("resume");
     }
 
@@ -77,6 +90,15 @@ public class ResumeServlet extends HttpServlet {
                 return;
             case "view":
                 r = storage.get(uuid);
+                break;
+            case "add":
+                r = new Resume();
+                r.addSection(SectionType.PERSONAL, new StringSection(""));
+                r.addSection(SectionType.OBJECTIVE, new StringSection(""));
+                r.addSection(SectionType.ACHIEVEMENT, new ListSection(""));
+                r.addSection(SectionType.QUALIFICATIONS, new ListSection(""));
+                r.addSection(SectionType.EXPERIENCE, new OrganizationSection(Organization.EMPTY));
+                r.addSection(SectionType.EDUCATION, new OrganizationSection(Organization.EMPTY));
                 break;
             case "edit":
                 r = storage.get(uuid);

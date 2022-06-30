@@ -32,10 +32,10 @@
             <h3>${type.title}</h3>
             <c:choose>
                 <c:when test="${type == 'PERSONAL' || type =='OBJECTIVE'}">
-                    <input type="text" size="100" value="<%=section%>">
+                    <input type="text" name="${type.name()}" size="100" value="<%=section%>">
                 </c:when>
                 <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
-                    <textarea name="textarea" cols="95"
+                    <textarea name="${type.name()}" cols="95"
                               rows="10"><%=String.join("\n", ((ListSection) section).getItems())%></textarea>
                 </c:when>
             </c:choose>
