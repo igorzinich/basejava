@@ -62,13 +62,13 @@
 
                                 <dl>
                                     <dt>Дата начала</dt>
-                                    <dd><input type="text" name="${type}${counter.index}startDate" size="75"
+                                    <dd><input type="date" name="${type}${counter.index}startDate" size="75"
                                                value="${position.startDate}">
                                 </dl>
 
                                 <dl>
                                     <dt>Дата окончания</dt>
-                                    <dd><input type="text" name="${type}${counter.index}endDate" size="75"
+                                    <dd><input type="date" name="${type}${counter.index}endDate" size="75"
                                                value="${position.endDate}">
                                 </dl>
 
