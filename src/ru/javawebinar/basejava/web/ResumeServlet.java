@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class ResumeServlet extends HttpServlet {
         String fullName = request.getParameter("fullName");
 
         Resume r;
-        if (uuid == null || uuid.length() == 0){
+        if (uuid == null || uuid.length() == 0) {
             r = new Resume(fullName);
         } else {
             r = storage.get(uuid);
@@ -47,7 +48,8 @@ public class ResumeServlet extends HttpServlet {
         }
         for (SectionType type : SectionType.values()) {
             String value = request.getParameter(type.name());
-            if (HtmlUtil.isEmpty(value)) {
+            String[] values = request.getParameterValues(type.name());
+            if (HtmlUtil.isEmpty(value) && values.length < 2) {
                 r.getSections().remove(type);
             } else {
                 switch (type) {
@@ -61,12 +63,31 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
+                        List<Organization> organizations = new ArrayList<>();
+                        String[] urls = request.getParameterValues(type.name() + "url");
+                        for (int i = 0; i < values.length; i++) {
+                            String name = values[i];
+                            if (!HtmlUtil.isEmpty(name)) {
+                                String index = type.name() + i;
+                                List<Organization.Position> positions = new ArrayList<>();
+                                String[] titles = request.getParameterValues(index + "title");
+                                String[] startDates = request.getParameterValues(index + "startDate");
+                                String[] endDates = request.getParameterValues(index + "endDate");
+                                String[] descriptions = request.getParameterValues(index + "description");
+                                for (int j = 0; j < titles.length; j++) {
+                                    if (!HtmlUtil.isEmpty(titles[j])) {
+                                        positions.add(new Organization.Position(LocalDate.parse(startDates[j]), LocalDate.parse(endDates[j]), titles[j], descriptions[j]));
+                                    }
+                                }
+                                organizations.add(new Organization(new Link(name, urls[i]), positions));
+                            }
+                        }
+                        r.addSection(type, new OrganizationSection(organizations));
                         break;
                 }
             }
         }
-
-        if (uuid == null || uuid.length() == 0){
+        if (uuid == null || uuid.length() == 0) {
             storage.save(r);
         } else {
             storage.update(r);
@@ -119,8 +140,17 @@ public class ResumeServlet extends HttpServlet {
                             break;
                         case EXPERIENCE:
                         case EDUCATION:
+                            OrganizationSection organizationSection = (OrganizationSection) section;
                             List<Organization> emptyFirstOrganizations = new ArrayList<>();
                             emptyFirstOrganizations.add(Organization.EMPTY);
+                            if (organizationSection != null) {
+                                for (Organization organization : organizationSection.getListOrganizations()) {
+                                    List<Organization.Position> emptyFirstPosition = new ArrayList<>();
+                                    emptyFirstPosition.add(Organization.Position.EMPTY);
+                                    emptyFirstPosition.addAll(organization.getPositions());
+                                    emptyFirstOrganizations.add(new Organization(organization.getHomePage(), emptyFirstPosition));
+                                }
+                            }
                             section = new OrganizationSection(emptyFirstOrganizations);
                             break;
                     }

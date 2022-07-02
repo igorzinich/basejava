@@ -32,11 +32,54 @@
             <h3>${type.title}</h3>
             <c:choose>
                 <c:when test="${type == 'PERSONAL' || type =='OBJECTIVE'}">
-                    <input type="text" name="${type.name()}" size="100" value="<%=section%>">
+                    <input type="text" name="${type.name()}" size="108" value="<%=section%>">
                 </c:when>
                 <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
-                    <textarea name="${type.name()}" cols="95"
+                    <textarea name="${type.name()}" cols="100"
                               rows="10"><%=String.join("\n", ((ListSection) section).getItems())%></textarea>
+                </c:when>
+                <c:when test="${type == 'EXPERIENCE' || type == 'EDUCATION'}">
+                    <c:forEach var="organization"
+                               items="<%=((OrganizationSection) section).getListOrganizations()%>" varStatus="counter">
+                            <dl>
+                                <dt>Наименование организации</dt>
+                                <dd><input type="text" name="${type}" size="81" value="${organization.homePage.name}">
+                            </dl>
+
+                            <dl>
+                                <dt>Сайт организации</dt>
+                                <dd><input type="text" name="${type}url" size="81" value="${organization.homePage.url}">
+                            </dl>
+                            <br>
+
+                            <div style="margin-left: 40px">
+                                <c:forEach var="position" items="${organization.positions}">
+                                <dl>
+                                    <dt>Должность</dt>
+                                    <dd><input type="text" name="${type}${counter.index}title" size="75"
+                                               value="${position.title}">
+                                </dl>
+
+                                <dl>
+                                    <dt>Дата начала</dt>
+                                    <dd><input type="text" name="${type}${counter.index}startDate" size="75"
+                                               value="${position.startDate}">
+                                </dl>
+
+                                <dl>
+                                    <dt>Дата окончания</dt>
+                                    <dd><input type="text" name="${type}${counter.index}endDate" size="75"
+                                               value="${position.endDate}">
+                                </dl>
+
+                                <dl>
+                                    <dt>Описание</dt>
+                                    <dd><textarea name="${type}${counter.index}description" cols="70"
+                                                  rows="5">${position.description}</textarea>
+                                </dl>
+                            </div>
+                            </c:forEach>
+                    </c:forEach>
                 </c:when>
             </c:choose>
         </c:forEach>
