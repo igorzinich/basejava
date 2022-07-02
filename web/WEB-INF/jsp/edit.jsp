@@ -15,7 +15,7 @@
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <dl>
             <dt>Имя:</dt>
-            <dd><input type="text" name="fullName" size=50 value="${resume.fullName}" required pattern="[A-ZA-ЯЁ][a-zа-яё]+\s[A-ZA-ЯЁ][a-zа-яё]+$"></dd>
+            <dd><input type="text" name="fullName" size=50 value="${resume.fullName}" required pattern="[А-Яа-яa-zA-Z\s]{2,}"></dd>
         </dl>
         <h3>Контакты</h3>
         <c:forEach var="type" items="<%=ContactType.values()%>">
