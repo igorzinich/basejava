@@ -1,4 +1,5 @@
 <%@ page import="ru.javawebinar.basejava.model.*" %>
+<%@ page import="ru.javawebinar.basejava.util.DateUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -54,32 +55,35 @@
                         <br>
 
                         <div style="margin-left: 40px">
-                        <c:forEach var="position" items="${organization.positions}">
-                            <dl>
-                                <dt>Должность</dt>
-                                <dd><input type="text" name="${type}${counter.index}title" size="75"
-                                           value="${position.title}">
-                            </dl>
+                            <c:forEach var="position" items="${organization.positions}">
+                                <jsp:useBean id="position" type="ru.javawebinar.basejava.model.Organization.Position"/>
+                                <dl>
+                                    <dt>Должность</dt>
+                                    <dd><input type="text" name="${type}${counter.index}title" size="75"
+                                               value="${position.title}">
+                                </dl>
 
-                            <dl>
-                                <dt>Дата начала</dt>
-                                <dd><input type="text" name="${type}${counter.index}startDate" size="75"
-                                           value="${position.startDate}" placeholder="MM-YYYY">
-                            </dl>
+                                <dl>
+                                    <dt>Дата начала</dt>
+                                    <dd><input type="text" name="${type}${counter.index}startDate" size="75"
+                                               value="<%=DateUtil.format(position.getStartDate())%>"
+                                               placeholder="MM-YYYY">
+                                </dl>
 
-                            <dl>
-                                <dt>Дата окончания</dt>
-                                <dd><input type="text" name="${type}${counter.index}endDate" size="75"
-                                           value="${position.endDate}" placeholder="MM-YYYY">
-                            </dl>
+                                <dl>
+                                    <dt>Дата окончания</dt>
+                                    <dd><input type="text" name="${type}${counter.index}endDate" size="75"
+                                               value="<%=DateUtil.format(position.getEndDate())%>"
+                                               placeholder="MM-YYYY">
+                                </dl>
 
-                            <dl>
-                                <dt>Описание</dt>
-                                <dd><textarea name="${type}${counter.index}description" cols="70"
-                                              rows="5">${position.description}</textarea>
-                            </dl>
-                            </div>
-                        </c:forEach>
+                                <dl>
+                                    <dt>Описание</dt>
+                                    <dd><textarea name="${type}${counter.index}description" cols="70"
+                                                  rows="5">${position.description}</textarea>
+                                </dl>
+                            </c:forEach>
+                        </div>
                     </c:forEach>
                 </c:when>
             </c:choose>

@@ -51,8 +51,8 @@
                             <h3 style="text-align: center">${listOrganizations.homePage.name}</h3>
                             <tr>
                                 <td width="170"
-                                    style="vertical-align: top"><%=position.getStartDate().format(DateUtil.formatter)%>
-                                    - <%=position.getEndDate().format(DateUtil.formatter)%>
+                                    style="vertical-align: top"><%=DateUtil.format(position.getStartDate())%>
+                                    - <%=DateUtil.format(position.getEndDate())%>
                                 </td>
                                 <td><b>${position.title}</b><br>${position.description}</td>
                             </tr>

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
@@ -58,7 +59,9 @@ public class ResumeServlet extends HttpServlet {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        r.addSection(type, new ListSection(value.split("\\n")));
+                        List<String> collection = new ArrayList<>(Arrays.asList(value.split("\\n")));
+                        collection.removeAll(Arrays.asList("\r", ""));
+                        r.addSection(type, new ListSection(collection));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
