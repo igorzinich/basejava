@@ -48,7 +48,14 @@
                     <c:forEach var="position" items="${listOrganizations.positions}">
                         <jsp:useBean id="position" type="ru.javawebinar.basejava.model.Organization.Position"/>
                         <table>
-                            <h3 style="text-align: center">${listOrganizations.homePage.name}</h3>
+                            <c:choose>
+                                <c:when test="${empty listOrganizations.homePage.url}">
+                                    <h3 style="text-align: center">${listOrganizations.homePage.name}</h3>
+                                </c:when>
+                                <c:otherwise>
+                                    <h3 style="text-align: center"><a href="${listOrganizations.homePage.url}">${listOrganizations.homePage.name}</a></h3>
+                                </c:otherwise>
+                            </c:choose>
                             <tr>
                                 <td width="170"
                                     style="vertical-align: top"><%=DateUtil.format(position.getStartDate())%>
