@@ -3,6 +3,7 @@
 <%@ page import="ru.javawebinar.basejava.model.StringSection" %>
 <%@ page import="ru.javawebinar.basejava.model.ListSection" %>
 <%@ page import="ru.javawebinar.basejava.model.OrganizationSection" %>
+<%@ page import="ru.javawebinar.basejava.util.DateUtil" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -32,24 +33,27 @@
         <h2>${type.title}</h2>
         <c:choose>
             <c:when test="${type == 'PERSONAL' || type =='OBJECTIVE'}">
-                    <%=((StringSection) section).getDescription()%>
+                <%=((StringSection) section).getDescription()%>
             </c:when>
             <c:when test="${type == 'ACHIEVEMENT' || type == 'QUALIFICATIONS'}">
-                    <c:forEach var="item" items="<%=((ListSection) section).getItems()%>">
-                        <ul>
-                            <li>${item}</li>
-                        </ul>
-                    </c:forEach>
+                <c:forEach var="item" items="<%=((ListSection) section).getItems()%>">
+                    <ul>
+                        <li>${item}</li>
+                    </ul>
+                </c:forEach>
             </c:when>
             <c:when test="${type == 'EXPERIENCE' || type == 'EDUCATION'}">
                 <c:forEach var="listOrganizations"
                            items="<%=((OrganizationSection) section).getListOrganizations()%>">
                     <c:forEach var="position" items="${listOrganizations.positions}">
+                        <jsp:useBean id="position" type="ru.javawebinar.basejava.model.Organization.Position"/>
                         <table>
                             <h3 style="text-align: center">${listOrganizations.homePage.name}</h3>
                             <tr>
-                                <td width="170" style="vertical-align: top">${position.startDate}
-                                    - ${position.endDate}</td>
+                                <td width="170"
+                                    style="vertical-align: top"><%=position.getStartDate().format(DateUtil.formatter)%>
+                                    - <%=position.getEndDate().format(DateUtil.formatter)%>
+                                </td>
                                 <td><b>${position.title}</b><br>${position.description}</td>
                             </tr>
                         </table>

@@ -1,9 +1,9 @@
 package ru.javawebinar.basejava.web;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.storage.Storage;
+import ru.javawebinar.basejava.util.DateUtil;
 import ru.javawebinar.basejava.util.HtmlUtil;
 
 import javax.servlet.ServletConfig;
@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +75,7 @@ public class ResumeServlet extends HttpServlet {
                                 String[] descriptions = request.getParameterValues(index + "description");
                                 for (int j = 0; j < titles.length; j++) {
                                     if (!HtmlUtil.isEmpty(titles[j])) {
-                                        positions.add(new Organization.Position(LocalDate.parse(startDates[j]), LocalDate.parse(endDates[j]), titles[j], descriptions[j]));
+                                        positions.add(new Organization.Position(DateUtil.parse(startDates[j]), DateUtil.parse(endDates[j]), titles[j], descriptions[j]));
                                     }
                                 }
                                 organizations.add(new Organization(new Link(name, urls[i]), positions));

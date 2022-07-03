@@ -15,7 +15,8 @@
         <input type="hidden" name="uuid" value="${resume.uuid}">
         <dl>
             <dt>Имя:</dt>
-            <dd><input type="text" name="fullName" size=50 value="${resume.fullName}" required pattern="[А-Яа-яa-zA-Z\s]{2,}"></dd>
+            <dd><input type="text" name="fullName" size=50 value="${resume.fullName}" required
+                       pattern="[А-Яа-яa-zA-Z\s]{2,}"></dd>
         </dl>
         <h3>Контакты</h3>
         <c:forEach var="type" items="<%=ContactType.values()%>">
@@ -41,44 +42,44 @@
                 <c:when test="${type == 'EXPERIENCE' || type == 'EDUCATION'}">
                     <c:forEach var="organization"
                                items="<%=((OrganizationSection) section).getListOrganizations()%>" varStatus="counter">
+                        <dl>
+                            <dt>Наименование организации</dt>
+                            <dd><input type="text" name="${type}" size="81" value="${organization.homePage.name}">
+                        </dl>
+
+                        <dl>
+                            <dt>Сайт организации</dt>
+                            <dd><input type="text" name="${type}url" size="81" value="${organization.homePage.url}">
+                        </dl>
+                        <br>
+
+                        <div style="margin-left: 40px">
+                        <c:forEach var="position" items="${organization.positions}">
                             <dl>
-                                <dt>Наименование организации</dt>
-                                <dd><input type="text" name="${type}" size="81" value="${organization.homePage.name}">
+                                <dt>Должность</dt>
+                                <dd><input type="text" name="${type}${counter.index}title" size="75"
+                                           value="${position.title}">
                             </dl>
 
                             <dl>
-                                <dt>Сайт организации</dt>
-                                <dd><input type="text" name="${type}url" size="81" value="${organization.homePage.url}">
+                                <dt>Дата начала</dt>
+                                <dd><input type="text" name="${type}${counter.index}startDate" size="75"
+                                           value="${position.startDate}" placeholder="MM-YYYY">
                             </dl>
-                            <br>
 
-                            <div style="margin-left: 40px">
-                                <c:forEach var="position" items="${organization.positions}">
-                                <dl>
-                                    <dt>Должность</dt>
-                                    <dd><input type="text" name="${type}${counter.index}title" size="75"
-                                               value="${position.title}">
-                                </dl>
+                            <dl>
+                                <dt>Дата окончания</dt>
+                                <dd><input type="text" name="${type}${counter.index}endDate" size="75"
+                                           value="${position.endDate}" placeholder="MM-YYYY">
+                            </dl>
 
-                                <dl>
-                                    <dt>Дата начала</dt>
-                                    <dd><input type="date" name="${type}${counter.index}startDate" size="75"
-                                               value="${position.startDate}">
-                                </dl>
-
-                                <dl>
-                                    <dt>Дата окончания</dt>
-                                    <dd><input type="date" name="${type}${counter.index}endDate" size="75"
-                                               value="${position.endDate}">
-                                </dl>
-
-                                <dl>
-                                    <dt>Описание</dt>
-                                    <dd><textarea name="${type}${counter.index}description" cols="70"
-                                                  rows="5">${position.description}</textarea>
-                                </dl>
+                            <dl>
+                                <dt>Описание</dt>
+                                <dd><textarea name="${type}${counter.index}description" cols="70"
+                                              rows="5">${position.description}</textarea>
+                            </dl>
                             </div>
-                            </c:forEach>
+                        </c:forEach>
                     </c:forEach>
                 </c:when>
             </c:choose>
